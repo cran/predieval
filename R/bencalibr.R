@@ -41,8 +41,8 @@
 #' dat2.t1=dat2; dat2.t1$t=1
 #' dat2$predict.treat.1=predict(glm1, newdata = dat2.t1) # predictions in treatment
 #' dat2$predict.treat.0=predict(glm1, newdata = dat2.t0) # predicions in control
-#' bencalibr(data=dat2, Ngroups=6, y.observed, predicted.treat.1=predict.treat.1,
-#'           predicted.treat.0=predict.treat.0, type="binary", treat=t,
+#' bencalibr(data=dat2, Ngroups=6, y.observed, predicted.treat.1=expit(predict.treat.1),
+#'           predicted.treat.0=expit(predict.treat.0), type="binary", treat=t,
 #'           smoothing.function = "lm")
 #' @export
 bencalibr<-function (data = NULL, ### a dataframe with model predictions and observed outcomes
@@ -179,8 +179,7 @@ bencalibr<-function (data = NULL, ### a dataframe with model predictions and obs
                               se.obs, ymax = obs + se.obs), width = 0.005) +
       geom_errorbarh(aes(xmin = pred - se.pred, xmax = pred +
                            se.pred), height = 0.005) + geom_smooth(method = smoothing.function,
-                                                                   colour = "blue", size = 0.5) + theme(aspect.ratio = 1) +
-      ggtitle("Calibration for benefit (measure: risk difference)")
+                                                                   colour = "blue", size = 0.5) + theme(aspect.ratio = 1)
     r1 <- max((suppressMessages(layer_scales(p2))$x$range$range))
     r2 <- min((suppressMessages(layer_scales(p2)$x$range$range)))
     s1 <- max((suppressMessages(layer_scales(p2)$y$range$range)))
